@@ -13,8 +13,7 @@ exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
      const removeFields = ['select' , 'sort'];
     // Loop over removeFields and delete them from reqQuery
       removeFields.forEach(param => delete reqQuery[param]);
-     console.log(reqQuery)
-    // Create query string
+     // Create query string
     let querystr = JSON.stringify(reqQuery)
      // Create operators ($gt, $gte)
     querystr = querystr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
@@ -26,7 +25,7 @@ exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
     const fields = req.query.select.split(',').join(' ');
     query = query.select(fields);
   }
-  // Sort
+  // Sort fields 
   if (req.query.sort) {
     const sortBy = req.query.sort.split(',').join(' ');
     query = query.sort(sortBy);
