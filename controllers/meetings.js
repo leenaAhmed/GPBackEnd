@@ -1,8 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler =require('../middleware/async')
 const Meeting = require('../models/Meetings');
-const { json } = require('express');
-// @desc      Get all meetings
+ // @desc      Get all meetings
 // @route     GET /api/v1/meetings
 // @access    Private
 exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
@@ -32,20 +31,20 @@ exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
   } else {
     query = query.sort('-createdAt');
   }
-// Pagination
-const page = parseInt(req.query.page, 10) || 1;
-const limit = parseInt(req.query.limit, 10) || 5;
-const startIndex = (page - 1) * limit;
-const endIndex = page * limit;
-const total = await  Meeting.countDocuments();
+  // Pagination
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 5;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const total = await  Meeting.countDocuments();
 
-query = query.skip(startIndex).limit(limit);
+    query = query.skip(startIndex).limit(limit);
 
  
-// Executing query
+  // Executing query
      const meetings = await query ;
  
-     // Pagination result
+  // Pagination result
      const pagination = {};  
      if (endIndex < total) {
        pagination.next = {

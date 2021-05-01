@@ -45,11 +45,11 @@ const MeetingsSchema = new mongoose.Schema({
         },  acceptGi: {
             type: Boolean,
             default: false
-          },
-          createdAt: {
+        },
+        createdAt: {
             type: Date,
             default: Date.now
-          },   
+        },   
 })
 MeetingsSchema.pre('save', function(next){
    this.slug = slugify(this.name ,{lower: true})

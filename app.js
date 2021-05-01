@@ -2,6 +2,7 @@ const express =require('express')
 const dotenv =require('dotenv')
 const colors = require('colors')
 const meetings =require('./routes/meetings')
+const auth =require('./routes/auth')
 const loggar =require('./middleware/logger')
 const errorHandler =require('./middleware/error')
 const connectDB = require('./config/db')
@@ -17,7 +18,9 @@ app.use(express.json())
 app.use(loggar)
 
 // routers
-app.use('/api/v1/meetings' , meetings) 
+app.use('/api/v1/meetings' , meetings)
+app.use('/api/v1/auth' , auth) 
+
 
 // error handler
 app.use(errorHandler)
