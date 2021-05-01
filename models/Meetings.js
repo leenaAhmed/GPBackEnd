@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
-
+const slugify = require('slugify')
 const MeetingsSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please add a name'],
-        unique: true,
         trim: true,
         maxlength: [50, 'Name can not be more than 50 characters']
       } ,
@@ -12,7 +11,6 @@ const MeetingsSchema = new mongoose.Schema({
       startDateTime: {
           type: String,
           required: [true, 'Please add a data'],
-          unique: true,
           match: [
               /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})Z$/g
               , 'invalid date'
@@ -29,32 +27,15 @@ const MeetingsSchema = new mongoose.Schema({
         type: String , 
       }
       ,
-      location: {
-          // GeoJSON Point
-          type: {
-            type: String,
-            enum: ['Point']
-          },
-          coordinates: {
-            type: [Number],
-            index: '2dsphere'
-          },
-          formattedAddress: String,
-          street: String,
-          city: String,
-          state: String,
-          zipcode: String,
-          country: String
-        },
-        file: {
+      file: {
           type: String,
           default: 'no-file.pdf'
         },   
-        housing: {
+      housing: {
           type: Boolean,
           default: false
         },
-        jobAssistance: {
+       jobAssistance: {
           type: Boolean,
           default: false
         },
@@ -69,5 +50,9 @@ const MeetingsSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
           },   
+})
+MeetingsSchema.pre('save', function(next){
+   this.slug = slugify(this.name ,{lower: true})
+    next();
 })
 module.exports = mongoose.model('Meetings', MeetingsSchema);
