@@ -1,11 +1,40 @@
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler =require('../middleware/async')
-const Meeting = require('../models/Meetings')
+const Meeting = require('../models/Meetings');
+const { json } = require('express');
 // @desc      Get all meetings
 // @route     GET /api/v1/meetings
 // @access    Private
 exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
-        const meetings = await Meeting.find()
+    let query ;  
+     // Copy query
+     const reqQuery = {...req.query}
+      // Fields to exclude
+     const removeFields = ['select' , 'sort'];
+    // Loop over removeFields and delete them from reqQuery
+      removeFields.forEach(param => delete reqQuery[param]);
+     console.log(reqQuery)
+    // Create query string
+    let querystr = JSON.stringify(reqQuery)
+     // Create operators ($gt, $gte)
+    querystr = querystr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+ 
+    // Finding resource
+    query =  Meeting.find(JSON.parse(querystr))
+  // Select Fields
+  if (req.query.select) {
+    const fields = req.query.select.split(',').join(' ');
+    query = query.select(fields);
+  }
+  // Sort
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(',').join(' ');
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort('-createdAt');
+  }
+
+     const meetings = await query ;
             res.status(200).json({
                 sucsees: true ,
                 count: meetings.length ,

@@ -26,7 +26,7 @@ app.use(errorHandler)
 const PORT = process.env.PORT|3000
 app.listen(PORT , ()=>{
     console.log(`Server running ${process.env.NODE_ENV} in mode on port ${PORT}`)
-})
+}) 
 // handel  promis rejaction
 process.on('unhandledRejection' ,(err, promise)=>{
     console.log(`Error: ${err.message}`)
