@@ -6,16 +6,17 @@ const {
     deleteMeeting ,
     updateMeeting ,
 } = require('../controllers/meetings')
+const {protect} = require('../middleware/auth')
 // get all meetings
 router
     .route('/')
     .get(getAllMeetings)
-    .post(creatMeeting) 
+    .post(protect,creatMeeting) 
 
 router
     .route('/:id')
     .get(getSingleMeetings)
-    .put(updateMeeting)
-    .delete(deleteMeeting)
+    .put(protect ,updateMeeting)
+    .delete(protect ,deleteMeeting)
 
 module.exports = router ;

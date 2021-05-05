@@ -10,7 +10,7 @@ exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
      const reqQuery = {...req.query}
       // Fields to exclude
      const removeFields = ['select' , 'sort' ,'page', 'limit'];
-    // Loop over removeFields and delete them from reqQuery
+    // Loop   removeFields  delete   from reqQuery
       removeFields.forEach(param => delete reqQuery[param]);
      // Create query string
     let querystr = JSON.stringify(reqQuery)
@@ -88,8 +88,8 @@ exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
 // @route     Post  /api/v1/meetings
 // @access    Private
 exports.creatMeeting = asyncHandler(async (req ,res , next) =>{ 
- 
-        const meeting = await Meeting.create(req.body);
+   
+       const meeting = await Meeting.create(req.body);
         res.status(200).json({
             sucsees: true ,
             msg: 'creat meetings' ,

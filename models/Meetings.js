@@ -50,6 +50,15 @@ const MeetingsSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         },   
+        createdBy: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'User',
+          required: true
+        },
+        recordUrl :{
+          type: String
+        }
+        // populate
 })
 MeetingsSchema.pre('save', function(next){
    this.slug = slugify(this.name ,{lower: true})

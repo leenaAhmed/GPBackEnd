@@ -1,8 +1,8 @@
 const express =require('express')
 const dotenv =require('dotenv')
+const morgan = require('morgan');
 const colors = require('colors')
-const meetings =require('./routes/meetings')
-const auth =require('./routes/auth')
+const cookieParser =require('cookie-parser') ;
 const loggar =require('./middleware/logger')
 const errorHandler =require('./middleware/error')
 const connectDB = require('./config/db')
@@ -11,9 +11,18 @@ dotenv.config({path:'./config/config.env'})
 // load connectDB
 connectDB();
 
-const app = express()
-//  
-app.use(express.json())
+// file routes 
+const meetings =require('./routes/meetings')
+const auth =require('./routes/auth')
+
+const app = express();
+
+app.use(express.json());
+
+// Dev logging middleware
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+  }
 // logger
 app.use(loggar)
 
@@ -24,6 +33,9 @@ app.use('/api/v1/auth' , auth)
 
 // error handler
 app.use(errorHandler)
+
+// cookie-parser 
+app.use(cookieParser);
 
 // listining to the port
 const PORT = process.env.PORT|3000
