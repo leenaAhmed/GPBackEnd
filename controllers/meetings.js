@@ -1,26 +1,19 @@
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler =require('../middleware/async')
 const Meeting = require('../models/Meetings');
- // @desc      Get all meetings
-// @route     GET /api/v1/meetings
-// @access    Private
+ 
 exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
     let query ;  
      // Copy query
      const reqQuery = {...req.query}
-      // Fields to exclude
-     const removeFields = ['select' , 'sort' ,'page', 'limit'];
-    // Loop   removeFields  delete   from reqQuery
-      removeFields.forEach(param => delete reqQuery[param]);
-     // Create query string
-    let querystr = JSON.stringify(reqQuery)
-     // Create operators ($gt, $gte)
-    querystr = querystr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+      const removeFields = ['select' , 'sort' ,'page', 'limit'];
+
+       removeFields.forEach(param => delete reqQuery[param]);
+     let querystr = JSON.stringify(reqQuery)
+     querystr = querystr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
  
-    // Finding resource
-    query =  Meeting.find(JSON.parse(querystr))
-  // Select Fields
-  if (req.query.select) {
+     query =  Meeting.find(JSON.parse(querystr))
+   if (req.query.select) {
     const fields = req.query.select.split(',').join(' ');
     query = query.select(fields);
   }
@@ -40,7 +33,6 @@ exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
 
     query = query.skip(startIndex).limit(limit);
 
- 
   // Executing query
      const meetings = await query ;
  
@@ -67,9 +59,14 @@ exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
                 data: meetings
             })
 }) ;
-// @desc      Get single meetings
-// @route     GET /api/v1/meetings:id
-// @access    Private
+
+exports.expirationDate = asyncHandler(async (req , res , next)=>{
+  await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}} , {isExpaired: true});
+  const getSechadul = await Meeting
+       .find({isExpaired: false}).
+        populate('meeting').sort({createdAt: -1}).select()
+})
+ 
 exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
    
         const meeting = await Meeting.findById(req.params.id)
@@ -84,9 +81,7 @@ exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
              })
  
 });
-// @desc     creat meetings
-// @route     Post  /api/v1/meetings
-// @access    Private
+ 
 exports.creatMeeting = asyncHandler(async (req ,res , next) =>{ 
    
        const meeting = await Meeting.create(req.body);
@@ -98,9 +93,8 @@ exports.creatMeeting = asyncHandler(async (req ,res , next) =>{
         
     
 }) ;
-// @desc     delete meetings
-// @route     Delete  /api/v1/meetings:id
-// @access    Private
+ 
+ 
 exports.deleteMeeting = asyncHandler(async(req ,res , next) =>{
 
         const meeting = await Meeting.findByIdAndDelete(req.params.id )
@@ -114,9 +108,7 @@ exports.deleteMeeting = asyncHandler(async(req ,res , next) =>{
         }) 
 
 }) ; 
-// @desc     Update meetings
-// @route     put  /api/v1/meetings
-// @access    Private
+  
 exports.updateMeeting = asyncHandler(async(req ,res , next) =>{ 
  
         const meeting = await Meeting.findByIdAndUpdate(req.params.id ,req.body , {

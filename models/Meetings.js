@@ -16,6 +16,10 @@ const MeetingsSchema = new mongoose.Schema({
               , 'invalid date'
           ]
       } ,
+      isExpaired :{
+        type: Boolean,
+        default: false
+      },
       duration: {
           type: Number ,
           match: [
@@ -57,7 +61,12 @@ const MeetingsSchema = new mongoose.Schema({
         },
         recordUrl :{
           type: String
-        }
+        } ,
+        participants : [
+         mongoose.Schema.ObjectId,
+         'User',
+       ]
+    
         // populate
 })
 MeetingsSchema.pre('save', function(next){

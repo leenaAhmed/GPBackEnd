@@ -5,12 +5,14 @@ const {
     getSingleMeetings ,
     deleteMeeting ,
     updateMeeting ,
+    expirationDate ,
 } = require('../controllers/meetings')
 const {protect} = require('../middleware/auth')
 // get all meetings
 router
     .route('/')
     .get(getAllMeetings)
+    .get(expirationDate)
     .post(protect,creatMeeting) 
 
 router
