@@ -59,12 +59,18 @@ exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
                 data: meetings
             })
 }) ;
-
+//  sechdul
 exports.expirationDate = asyncHandler(async (req , res , next)=>{
   await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}} , {isExpaired: true});
   const getSechadul = await Meeting
        .find({isExpaired: false}).
         populate('meeting').sort({createdAt: -1}).select()
+        res.status(200).json({
+          sucsees: true ,
+          count: meetings.length ,
+          pagination ,
+          data: getSechadul
+      })
 })
  
 exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{

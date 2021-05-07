@@ -12,9 +12,9 @@ const {protect} = require('../middleware/auth')
 router
     .route('/')
     .get(getAllMeetings)
-    .get(expirationDate)
     .post(protect,creatMeeting) 
-
+    
+router.get('/expiration' , expirationDate)
 router
     .route('/:id')
     .get(getSingleMeetings)
