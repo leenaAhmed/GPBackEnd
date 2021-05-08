@@ -14,6 +14,7 @@ connectDB();
 // file routes 
 const meetings =require('./routes/meetings')
 const auth =require('./routes/auth')
+const users =require('./routes/users')
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(loggar)
 // routers
 app.use('/api/v1/meetings' , meetings)
 app.use('/api/v1/auth' , auth) 
+app.use('/api/v1/users', users);
 
 
 // error handler
@@ -40,7 +42,7 @@ app.use(cookieParser);
 // listining to the port
 const PORT = process.env.PORT|3000
 app.listen(PORT , ()=>{
-    console.log(`Server running ${process.env.NODE_ENV} in mode on port ${PORT}`)
+    console.log(`Server running  in mode on port ${PORT}`)
 }) 
 // handel  promis rejaction
 process.on('unhandledRejection' ,(err, promise)=>{

@@ -7,13 +7,15 @@ getMe ,
 forgotpassword ,
 resetPassword ,
 updateDetails ,
-updatePassword
+updatePassword ,
+logOut
 } 
 = require('../controllers/auth')
 
 // get
 router.post('/register' ,register)
 router.post('/login' ,login)
+router.get('/logout' ,logOut)
 router.get('/me' , protect,getMe)
 router.put('/updateDetails' , protect,updateDetails)
 router.put('/updatePassword' , protect,updatePassword)

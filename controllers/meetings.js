@@ -1,76 +1,20 @@
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler =require('../middleware/async')
 const Meeting = require('../models/Meetings');
+  
+exports.getSechdule = asyncHandler(async (req ,res , next) =>{
  
-exports.getAllMeetings = asyncHandler(async (req ,res , next) =>{
-    let query ;  
-     // Copy query
-     const reqQuery = {...req.query}
-      const removeFields = ['select' , 'sort' ,'page', 'limit'];
-
-       removeFields.forEach(param => delete reqQuery[param]);
-     let querystr = JSON.stringify(reqQuery)
-     querystr = querystr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
- 
-     query =  Meeting.find(JSON.parse(querystr))
-   if (req.query.select) {
-    const fields = req.query.select.split(',').join(' ');
-    query = query.select(fields);
-  }
-  // Sort fields 
-  if (req.query.sort) {
-    const sortBy = req.query.sort.split(',').join(' ');
-    query = query.sort(sortBy);
-  } else {
-    query = query.sort('-createdAt');
-  }
-  // Pagination
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 5;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const total = await  Meeting.countDocuments();
-
-    query = query.skip(startIndex).limit(limit);
-
-  // Executing query
-     const meetings = await query ;
- 
-  // Pagination result
-     const pagination = {};  
-     if (endIndex < total) {
-       pagination.next = {
-         page: page + 1,
-         limit
-       };
-     }
-    // previous meeting
-     if (startIndex > 0) {
-       pagination.prev = {
-         page: page - 1,
-         limit
-       };
-     }
-       
-     res.status(200).json({
-                sucsees: true ,
-                count: meetings.length ,
-                pagination ,
-                data: meetings
-            })
+     res.status(200).json(res.results)
 }) ;
-//  sechdul
+//  past 
 exports.expirationDate = asyncHandler(async (req , res , next)=>{
-  await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}} , {isExpaired: true});
-  const getSechadul = await Meeting
+
+  await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}} 
+                           , {isExpaired: true});
+  const getPast = await Meeting
        .find({isExpaired: false}).
-        populate('meeting').sort({createdAt: -1}).select()
-        res.status(200).json({
-          sucsees: true ,
-          count: meetings.length ,
-          pagination ,
-          data: getSechadul
-      })
+        populate('meeting').sort({createdAt: -1}).select('+startDateTime')
+      console.log(getPast)
 })
  
 exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
