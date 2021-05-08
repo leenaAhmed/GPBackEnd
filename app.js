@@ -28,6 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(loggar)
 
 // routers
+
 app.use('/api/v1/meetings' , meetings)
 app.use('/api/v1/auth' , auth) 
 app.use('/api/v1/users', users);
