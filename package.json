@@ -4,8 +4,8 @@
   "description": "APi & database for meeting room",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production node app",
-    "dev": "nodemon app"
+    "start": "NODE_ENV=production node app"
+     
   },
   "author": "leenaAhmed",
   "license": "MIT",
