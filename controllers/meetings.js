@@ -12,8 +12,7 @@ exports.expirationDate = asyncHandler(async (req , res , next)=>{
   await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}} 
                            , {isExpaired: true});
   const getPast = await Meeting
-       .find({isExpaired: false}).
-        populate('meeting').sort({createdAt: -1}).select('+startDateTime')
+       .find({isExpaired: false}).sort({createdAt: -1}).select('startDateTime')
       console.log(getPast)
 })
  

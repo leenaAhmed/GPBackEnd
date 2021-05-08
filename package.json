@@ -4,7 +4,7 @@
   "description": "APi & database for meeting room",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production node app"
+    "start": "node app"
      
   },
   "author": "leenaAhmed",

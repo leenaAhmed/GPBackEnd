@@ -63,8 +63,10 @@ const MeetingsSchema = new mongoose.Schema({
           type: String
         } ,
         participants : [
-         mongoose.Schema.ObjectId,
-         'User',
+        {
+          type: mongoose.Schema.ObjectId,
+         ref:'User',
+        }
        ]
     
         // populate
