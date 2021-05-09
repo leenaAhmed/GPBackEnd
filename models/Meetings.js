@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const path = require('path');
 const slugify = require('slugify')
 const MeetingsSchema = new mongoose.Schema({
     name: {
@@ -22,6 +23,7 @@ const MeetingsSchema = new mongoose.Schema({
       },
       duration: {
           type: Number ,
+          required: [true, 'Please add a time'],
           match: [
               /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/gm ,
               'invalid time' 
@@ -46,7 +48,8 @@ const MeetingsSchema = new mongoose.Schema({
         jobGuarantee: {
           type: Boolean,
           default: false
-        },  acceptGi: {
+        }, 
+         acceptGi: {
             type: Boolean,
             default: false
         },
@@ -57,8 +60,7 @@ const MeetingsSchema = new mongoose.Schema({
         createdBy: {
           type: mongoose.Schema.ObjectId,
           ref: 'User',
-          required: true
-        },
+         },
         recordUrl :{
           type: String
         } ,

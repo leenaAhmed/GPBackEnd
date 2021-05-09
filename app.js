@@ -2,6 +2,7 @@ const express =require('express')
 const dotenv =require('dotenv')
 const morgan = require('morgan');
 const colors = require('colors')
+const fileupload = require('express-fileupload');
 const cookieParser =require('cookie-parser') ;
 const loggar =require('./middleware/logger')
 const errorHandler =require('./middleware/error')
@@ -24,8 +25,10 @@ app.use(express.json());
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
   }
-// logger
+  
 app.use(loggar)
+
+app.use(fileupload());
 
 // routers
 

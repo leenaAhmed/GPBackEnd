@@ -9,10 +9,8 @@ exports.getSechdule = asyncHandler(async (req ,res , next) =>{
 //  past 
 exports.expirationDate = asyncHandler(async (req , res , next)=>{
 
-  await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}} 
-                           , {isExpaired: true});
-  const getPast = await Meeting
-       .find({isExpaired: false}).sort({createdAt: -1}).select('startDateTime')
+  await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}}, {isExpaired: true});
+  const getPast = await Meeting.find({isExpaired: false}).sort({createdAt: -1}).select('startDateTime')
       console.log(getPast)
 })
  
@@ -25,7 +23,7 @@ exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
              );
           }
         res.status(200).json({
-                sucsees: true ,
+                success: true ,
                 data: meeting
              })
  
@@ -35,7 +33,7 @@ exports.creatMeeting = asyncHandler(async (req ,res , next) =>{
    
        const meeting = await Meeting.create(req.body);
         res.status(200).json({
-            sucsees: true ,
+            success: true ,
             msg: 'creat meetings' ,
             data: meeting
         })
@@ -52,7 +50,7 @@ exports.deleteMeeting = asyncHandler(async(req ,res , next) =>{
                 new ErrorResponse(`this meeting not found with id ${req.params.id}` , 404)
                 );          }
         res.status(200).json({
-            sucsees: true ,
+            success: true ,
             data: {}
         }) 
 
@@ -70,7 +68,7 @@ exports.updateMeeting = asyncHandler(async(req ,res , next) =>{
                 );       
            }
         res.status(200).json({
-            sucsees: true ,
+            success: true ,
             data: meeting
         }) 
   

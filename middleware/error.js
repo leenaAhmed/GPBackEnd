@@ -6,12 +6,12 @@ const errorHandler = (err , req ,res ,next)=>{
 
     // mongoose bad error handeling 
      if(err.name === 'CastError'){
-         const message = `this meeting not found with id ${err.value}` ;
+         const message = `this feild not found with id ${err.value}` ;
          error = new ErrorResponse(message , 404) ;
      }
     // mongoose duplicate key error 
      if(err.code === 11000){
-         const message = `duplicate field value entered` ;
+         const message = `duplicate field value entered check ` ;
          error = new ErrorResponse(message , 400) ;
      }
      // mongoose validation Error 
@@ -21,7 +21,7 @@ const errorHandler = (err , req ,res ,next)=>{
       }
      
     res.status(error.statusCode || 500).json({
-        sucsees: false ,
+        success: false ,
         error: error.message || 'server error'
     }) 
 }
