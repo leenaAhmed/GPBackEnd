@@ -34,7 +34,24 @@ const MeetingsSchema = new mongoose.Schema({
       file: {
           type: String,
           default: 'no-file.pdf'
-        },   
+        }, 
+        createdAt: {
+          type: Date,
+          default: Date.now
+      },   
+      createdBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+       },
+      recordUrl :{
+        type: String
+      } ,
+      participants : [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref:'User'
+      }
+     ],  
       housing: {
           type: Boolean,
           default: false
@@ -51,23 +68,7 @@ const MeetingsSchema = new mongoose.Schema({
             type: Boolean,
             default: false
         },
-        createdAt: {
-            type: Date,
-            default: Date.now
-        },   
-        createdBy: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'User',
-         },
-        recordUrl :{
-          type: String
-        } ,
-        participants : [
-        {
-          type: mongoose.Schema.ObjectId,
-          ref:'User'
-        }
-       ]
+       
     
         // populate
 })
