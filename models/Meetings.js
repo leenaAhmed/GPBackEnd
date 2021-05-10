@@ -17,7 +17,7 @@ const MeetingsSchema = new mongoose.Schema({
       } ,
       isExpaired :{
         type: Boolean,
-        default: false
+        default: true
       },
       duration: {
           type: Number ,
