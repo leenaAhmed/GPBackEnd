@@ -21,7 +21,7 @@ exports.expirationDate = asyncHandler(async (req , res , next)=>{
     })
     
 })
- 
+
 exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
    
         const meeting = await Meeting.findById(req.params.id)
@@ -81,3 +81,18 @@ exports.updateMeeting = asyncHandler(async(req ,res , next) =>{
         }) 
   
 });
+
+exports.creatMeetingNow = asyncHandler(async (req ,res , next) =>{ 
+   
+     const meeting = await Meeting.create({
+      name: req.body.name
+    });
+
+      res.status(200).json({
+         success: true ,
+         msg: 'creat meetings now' ,
+         data: meeting
+     })
+     
+ 
+}) ;

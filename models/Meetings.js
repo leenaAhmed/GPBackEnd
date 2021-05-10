@@ -10,9 +10,7 @@ const MeetingsSchema = new mongoose.Schema({
       slug: String,
       startDateTime: {
           type: Date,
-          default: Date.now ,
-          required: [true, 'Please add a data'],
-          
+          default: Date.now ,          
       } ,
       isExpaired :{
         type: Boolean,
@@ -20,15 +18,14 @@ const MeetingsSchema = new mongoose.Schema({
       },
       duration: {
           type: Number ,
-          required: [true, 'Please add a time'],
-          match: [
+           match: [
               /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/gm ,
               'invalid time' 
           ]
       }  ,
       join_url: {
         type: String , 
-      }
+       }
       ,
       file: {
           type: String,
