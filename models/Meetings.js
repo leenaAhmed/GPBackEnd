@@ -5,7 +5,6 @@ const MeetingsSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Please add a name'],
-        trim: true,
         maxlength: [50, 'Name can not be more than 50 characters']
       } ,
       slug: String,
@@ -17,7 +16,7 @@ const MeetingsSchema = new mongoose.Schema({
       } ,
       isExpaired :{
         type: Boolean,
-        default: true
+        default: false
       },
       duration: {
           type: Number ,
@@ -52,24 +51,7 @@ const MeetingsSchema = new mongoose.Schema({
         ref:'User'
       }
      ],  
-      housing: {
-          type: Boolean,
-          default: false
-        },
-       jobAssistance: {
-          type: Boolean,
-          default: false
-        },
-        jobGuarantee: {
-          type: Boolean,
-          default: false
-        }, 
-         acceptGi: {
-            type: Boolean,
-            default: false
-        },
-       
-    
+
         // populate
 })
 MeetingsSchema.pre('save', function(next){
