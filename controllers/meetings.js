@@ -9,8 +9,8 @@ exports.getSechdule = asyncHandler(async (req ,res , next) =>{
 //  past 
 exports.expirationDate = asyncHandler(async (req , res , next)=>{
 
-  await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}}, {isExpaired: true});
-  const getPast = await Meeting.find({isExpaired: false}).sort({createdAt: -1}).select('startDateTime')
+  await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now)}}, {isExpaired: false});
+  const getPast = await Meeting.find({isExpaired: true}).sort({createdAt: -1}).select('startDateTime')
       console.log(getPast)
 })
  
