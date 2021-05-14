@@ -8,20 +8,7 @@ exports.getSechdule = asyncHandler(async (req ,res , next) =>{
 
       res.status(200).json(res.results)
 }) ;
-//  past 
-exports.expirationDate = asyncHandler(async (req , res , next)=>{
-        
-  await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now())}},{isExpaired: true});
-  const getPast = await Meeting.find({isExpaired: false}).sort({createdAt: -1})
-    //   console.log(` past data ${getPast}`)
 
-      res.status(200).json({
-        success: true ,
-        msg: 'past  meetings' ,
-        data: getPast
-    })
-    
-})
 
 exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
    
