@@ -10,7 +10,7 @@ const MeetingsSchema = new mongoose.Schema({
       slug: String,
       startDateTime: {
           type: Date,
-          default: Date.now ,          
+          default: Date.now() ,          
       } ,
       isExpaired :{
         type: Boolean,
@@ -21,7 +21,8 @@ const MeetingsSchema = new mongoose.Schema({
            match: [
               /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/gm ,
               'invalid time' 
-          ]
+          ] ,
+          min:  [5, ' no meeting less than 5 Minutes']
       }  ,
       join_url: {
         type: String , 
@@ -33,7 +34,7 @@ const MeetingsSchema = new mongoose.Schema({
         }, 
         createdAt: {
           type: Date,
-          default: Date.now
+          default: Date.now()
       },   
       createdBy: {
         type: mongoose.Schema.ObjectId,

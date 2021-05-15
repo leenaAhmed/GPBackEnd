@@ -11,8 +11,8 @@ const errorHandler = (err , req ,res ,next)=>{
      }
     // mongoose duplicate key error 
      if(err.code === 11000){
-         const message = `duplicate field value entered check ` ;
-         error = new ErrorResponse(message , 400) ;
+         const message = `duplicate field  entered check ${err.name} ` ;
+          error = new ErrorResponse(message , 400) ;
      }
      // mongoose validation Error 
       if(err.name === 'ValidatorError'){

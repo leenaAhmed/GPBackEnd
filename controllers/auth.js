@@ -30,12 +30,12 @@ exports.login = asyncHandler(async (req ,res , next) =>{
     const user =  await User.findOne({email}).select('+password')
 
     if(!user){
-        return  next(new ErrorResponse('Invalid user', 401));
+        return  next(new ErrorResponse('there is no user', 401));
     }
     // check if password matches 
     const isMatch = await user.matchPassword(password);
     if(!isMatch){
-        return  next(new ErrorResponse('Invalid user', 401));
+        return  next(new ErrorResponse('password is incorrect ', 401));
     }
 
     sendTokenResponse(user , 200 , res);
@@ -181,6 +181,5 @@ const sendTokenResponse = (user, statusCode, res) => {
       .json({
         success: true,
         token ,
-        data: user
-      });
+       });
   };

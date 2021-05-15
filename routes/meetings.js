@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const Meetings = require('../models/Meetings')
 const {
-    getSechdule ,
+    getMeetings ,
     creatMeeting ,
     getSingleMeetings ,
     deleteMeeting ,
@@ -13,7 +13,7 @@ const results =require('../middleware/results')
 // get all meetings
 router
     .route('/')
-    .get(results(Meetings),getSechdule)
+    .get(results(Meetings),getMeetings)
     .post(protect,creatMeeting) 
     
 router.post('/meetingNow' , creatMeetingNow)
