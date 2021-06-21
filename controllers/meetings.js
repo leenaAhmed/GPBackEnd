@@ -1,6 +1,8 @@
-const ErrorResponse = require('../utils/errorResponse')
-const asyncHandler =require('../middleware/async')
-const Meeting = require('../models/Meetings');
+const  ErrorResponse = require('../utils/errorResponse')
+const  asyncHandler =require('../middleware/async')
+const  Meeting = require('../models/Meetings');
+const  multer  = require('multer')
+const  upload = multer({ dest: 'uploads/' })
   
 exports.getMeetings = asyncHandler(async (req ,res , next) =>{
      await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now())}}, {isExpaired: true}).sort({createdAt: -1});
@@ -85,4 +87,12 @@ exports.creatMeetingNow = asyncHandler(async (req ,res , next) =>{
          msg: 'creat meetings now' ,
          data: meeting
      })
+}) ;
+
+// PUT /api/v1/meeting/:id/file
+exports.uploadFile = asyncHandler(async (req ,res , next) =>{ 
+    
+    
+  
+
 }) ;

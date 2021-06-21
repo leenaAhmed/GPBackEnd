@@ -12,18 +12,15 @@ const MeetingsSchema = new mongoose.Schema({
           type: Date,
           default: Date.now() ,          
       } ,
+      duration: {
+        type: Date ,
+        min:  [5, ' no meeting less than 5 Minutes']
+    },
       isExpaired :{
         type: Boolean,
         default: false
       },
-      duration: {
-          type: Number ,
-           match: [
-              /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/gm ,
-              'invalid time' 
-          ] ,
-          min:  [5, ' no meeting less than 5 Minutes']
-      }  ,
+  
       join_url: {
         type: String , 
        }

@@ -19,7 +19,8 @@ const auth =require('./routes/auth')
 const users =require('./routes/users')
 
 const app = express();
-app.use(cors())
+
+app.use(cors());
 app.use(express.json());
 
 // Dev logging middleware
