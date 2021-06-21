@@ -3,7 +3,7 @@ const asyncHandler =require('../middleware/async')
 const Meeting = require('../models/Meetings');
   
 exports.getMeetings = asyncHandler(async (req ,res , next) =>{
-     await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now())}},{isExpaired: true}).sort({createdAt: -1});
+     await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now())}}, {isExpaired: true}).sort({createdAt: -1});
       
       res.status(200).json(res.results)
 }) ;
@@ -85,40 +85,4 @@ exports.creatMeetingNow = asyncHandler(async (req ,res , next) =>{
          msg: 'creat meetings now' ,
          data: meeting
      })
-}) ;
-
-// PUT /api/v1/meetinga/:id/file
-exports.uploadFile = asyncHandler(async (req ,res , next) =>{ 
-    const meeting = await Meeting.findById(req.params.id);
-
-    const file = req.files.file;
-
-     if (!file.mimetype.startsWith('pdf')) {
-      return next(new ErrorResponse(`Please upload an pdf file`, 400));
-    }
-   if (file.size > process.env.MAX_FILE_UPLOAD) {
-    return next(
-      new ErrorResponse(
-        `Please upload an file less than ${process.env.MAX_FILE_UPLOAD}`,
-        400
-      )
-    );
-  }
-
-  file.name = `file_${meeting._id}${path.parse(file.name).ext}`;
-
-  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
-    if (err) {
-      console.error(err);
-      return next(new ErrorResponse(`Problem with file upload`, 500));
-    }
-
-    await Meeting.findByIdAndUpdate(req.params.id, { file: file.name });
-
-    res.status(200).json({
-      success: true,
-      data: file.name
-    });
-  });
-
 }) ;

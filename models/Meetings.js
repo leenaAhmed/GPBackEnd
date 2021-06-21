@@ -50,8 +50,7 @@ const MeetingsSchema = new mongoose.Schema({
       }
      ],  
 
-        // populate
-})
+ })
 MeetingsSchema.pre('save', function(next){
    this.slug = slugify(this.name ,{lower: true})
     next();

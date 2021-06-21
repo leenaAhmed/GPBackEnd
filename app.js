@@ -1,6 +1,7 @@
 const express =require('express')
 const dotenv =require('dotenv')
 const morgan = require('morgan');
+var cors = require('cors')
 const colors = require('colors')
 const fileupload = require('express-fileupload');
 const cookieParser =require('cookie-parser') ;
@@ -18,7 +19,7 @@ const auth =require('./routes/auth')
 const users =require('./routes/users')
 
 const app = express();
-
+app.use(cors())
 app.use(express.json());
 
 // Dev logging middleware
