@@ -2,7 +2,7 @@ const  ErrorResponse = require('../utils/errorResponse')
 const  asyncHandler =require('../middleware/async')
 const  Meeting = require('../models/Meetings');
 const  multer  = require('multer')
-const  upload = multer({ dest: 'uploads/' })
+// const  upload = multer({ dest: process.env.UPLOAD_PATH})
   
 exports.getMeetings = asyncHandler(async (req ,res , next) =>{
      await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now())}}, {isExpaired: true}).sort({createdAt: -1});
@@ -89,10 +89,23 @@ exports.creatMeetingNow = asyncHandler(async (req ,res , next) =>{
      })
 }) ;
 
-// PUT /api/v1/meeting/:id/file
-exports.uploadFile = asyncHandler(async (req ,res , next) =>{ 
-    
-    
+ exports.uploadfile = asyncHandler(async (req ,res , next) =>{ 
+  const filestorageEngine = multer.diskStorage({
+    destination:  (req, file, cb => {
+      cb(null, './uploads')
+    }),
+    filename:  (req, file, cb => {
+      cb(null, file.fieldname + '--' + Date.now())
+    })
+  }) 
+const upload = multer({ storage: filestorageEngine })
+ upload.single("image"),(req, res, next => {
+    console.log('path' + req.file.path )
+    console.log('file' , JSON.stringify(req.file))
+    res.status(200).json({
+      success: true ,   
+     })  
+  });
   
 
 }) ;
