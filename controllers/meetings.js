@@ -89,23 +89,24 @@ exports.creatMeetingNow = asyncHandler(async (req ,res , next) =>{
      })
 }) ;
 
- exports.uploadfile = asyncHandler(async (req ,res , next) =>{ 
-  const filestorageEngine = multer.diskStorage({
-    destination:  (req, file, cb => {
-      cb(null, './uploads')
-    }),
-    filename:  (req, file, cb => {
+ 
+const filestorageEngine = multer.diskStorage({
+    destination: function (req, file, cb ) {
+      cb(null, "./uploads")
+    },
+    filename: function(req, file, cb ) { 
+       req.file = file 
       cb(null, file.fieldname + '--' + Date.now())
-    })
+    }
   }) 
 const upload = multer({ storage: filestorageEngine })
- upload.single("image"),(req, res, next => {
-    console.log('path' + req.file.path )
-    console.log('file' , JSON.stringify(req.file))
-    res.status(200).json({
+
+exports.uploadHandler = upload.single("image");
+
+exports.afterUploadFile = function(req, res, next ) {
+     console.log('file' , JSON.stringify(req.file))
+    console.log('path' , req.file.path )
+     res.status(200).json({
       success: true ,   
      })  
-  });
-  
-
-}) ;
+  };

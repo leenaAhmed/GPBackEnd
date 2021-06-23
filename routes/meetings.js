@@ -7,7 +7,8 @@ const {
     deleteMeeting ,
     updateMeeting ,
     creatMeetingNow ,
-    uploadfile
+    uploadHandler ,
+    afterUploadFile
 } = require('../controllers/meetings')
 const {protect} = require('../middleware/auth')
 const results =require('../middleware/results')
@@ -19,7 +20,7 @@ router
     
 router.route('/meetingNow').post(creatMeetingNow)
 
-router.post('/uploadfile' , uploadfile)
+router.route('/uploadfile').post( uploadHandler ,afterUploadFile)
 router
     .route('/:id')
     .get(getSingleMeetings)
