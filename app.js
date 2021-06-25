@@ -30,8 +30,7 @@ if (process.env.NODE_ENV === 'development') {
   
 app.use(loggar)
 
-app.use(fileupload());
-
+ 
 // routers
 
 app.use('/api/v1/meetings' , meetings)

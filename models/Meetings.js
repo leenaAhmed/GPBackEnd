@@ -26,8 +26,8 @@ const MeetingsSchema = new mongoose.Schema({
        }
       ,
       file: {
-          type: String,
-          default: 'no-file.pdf'
+        type: Buffer, 
+         
         }, 
         createdAt: {
           type: Date,
