@@ -26,22 +26,40 @@ exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
  
 });
  
-exports.creatMeeting = asyncHandler(async (req ,res , next) =>{
-    const meeting = await Meeting.create(req.body);
+const filestorageEngine = multer.memoryStorage({
+    destination: function (req, file, cb ) {
+      cb(null, "./uploads/")
+    },
+    filename: function(req, file, cb ) { 
+       cb(null, file.fieldname + '--' + Date.now())
+    }
+  }
+)
+const upload = multer({ storage: filestorageEngine })
+
+exports.uploadHandler = upload.single("file");
+
+exports.creatMeeting = async (req ,res , next) =>{ 
+  console.log(req.body)
+    const meeting = await Meeting.create(req.body); 
+    await Meeting.updateMany({_id:meeting._id},{file:req.file.buffer});
+  
     const  {startDateTime} = req.body 
-    const expairedDate = Date.parse(startDateTime)
+    console.log(req.body)
+     const expairedDate = Date.parse(startDateTime)
        if(expairedDate < Date.now()){
         return next(
             new ErrorResponse(`this is expaired date inter inavlid date` , 400)
             );
-       }
-        res.status(200).json({
+       }     
+         res.status(200).json({
             success: true ,
             msg: 'creat meetings' ,
-            data: meeting
+            data: meeting ,
+ 
         })
          
-}) ;
+} ;
  
  
 exports.deleteMeeting = asyncHandler(async(req ,res , next) =>{
@@ -90,25 +108,25 @@ exports.creatMeetingNow = asyncHandler(async (req ,res , next) =>{
 }) ;
 
 
-const filestorageEngine = multer.memoryStorage({
-        destination: function (req, file, cb ) {
-          cb(null, "./uploads/")
-        },
-        filename: function(req, file, cb ) { 
-           cb(null, file.fieldname + '--' + Date.now())
-        }
-      }
-)
-const upload = multer({ storage: filestorageEngine })
+// const filestorageEngine = multer.memoryStorage({
+//         destination: function (req, file, cb ) {
+//           cb(null, "./uploads/")
+//         },
+//         filename: function(req, file, cb ) { 
+//            cb(null, file.fieldname + '--' + Date.now())
+//         }
+//       }
+// )
+// const upload = multer({ storage: filestorageEngine })
 
-exports.uploadHandler = upload.single("file");
+// exports.uploadHandler = upload.single("file");
 
-exports.afterUploadFile = asyncHandler(async(req, res, next ) => {
+// exports.afterUploadFile = asyncHandler(async(req, res, next ) => {
       
-    await Meeting.updateMany({_id:req.params.id},{file:req.file.buffer});
-     res.status(200).json({
-      success: true ,  
-       })  
-  });
+//     await Meeting.updateMany({_id:req.params.id},{file:req.file.buffer});
+//      res.status(200).json({
+//       success: true ,  
+//        })  
+//   });
  
             

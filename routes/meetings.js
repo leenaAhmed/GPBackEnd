@@ -16,11 +16,11 @@ const results =require('../middleware/results')
 router
     .route('/')
     .get(results(Meetings),getMeetings)
-    .post(protect,creatMeeting) 
+    .post(protect, uploadHandler ,creatMeeting   ) 
     
 router.route('/meetingNow').post(creatMeetingNow)
 
-router.route('/uploadfile/:id').post(uploadHandler ,afterUploadFile)
+// router.route('/uploadfile/:id').post(uploadHandler ,afterUploadFile)
 console.log(uploadHandler)
 router
     .route('/:id')

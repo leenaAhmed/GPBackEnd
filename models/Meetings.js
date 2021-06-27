@@ -13,7 +13,7 @@ const MeetingsSchema = new mongoose.Schema({
           default: Date.now() ,          
       } ,
       duration: {
-        type: Date ,
+        type: Number ,
         min:  [5, ' no meeting less than 5 Minutes']
     },
       isExpaired :{
