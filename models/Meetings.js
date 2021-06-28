@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
-const path = require('path');
+const User = require('./user')
 const slugify = require('slugify')
+ 
 const MeetingsSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -13,9 +14,9 @@ const MeetingsSchema = new mongoose.Schema({
           default: Date.now() ,          
       } ,
       duration: {
-        type: Number ,
-        min:  [5, ' no meeting less than 5 Minutes']
-    },
+        type: String ,
+
+      },
       isExpaired :{
         type: Boolean,
         default: false
@@ -40,16 +41,16 @@ const MeetingsSchema = new mongoose.Schema({
       recordUrl :{
         type: String
       } ,
-      participants : [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref:'User'
-      }
-     ],  
+      
 
  })
 MeetingsSchema.pre('save', function(next){
    this.slug = slugify(this.name ,{lower: true})
     next();
 })
+MeetingsSchema.pre('save', function(next){
+     this.duration.split(':') 
+    next()
+
+});
 module.exports = mongoose.model('Meetings', MeetingsSchema);

@@ -2,8 +2,8 @@ const  ErrorResponse = require('../utils/errorResponse')
 const  asyncHandler =require('../middleware/async')
 const  Meeting = require('../models/Meetings');
 const  multer  = require('multer')
-// const  upload = multer({ dest: process.env.UPLOAD_PATH})
-  
+const moment = require('moment');
+   
 exports.getMeetings = asyncHandler(async (req ,res , next) =>{
      await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now())}}, {isExpaired: true}).sort({createdAt: -1});
       
@@ -25,42 +25,30 @@ exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
              })
  
 });
- 
-const filestorageEngine = multer.memoryStorage({
-    destination: function (req, file, cb ) {
-      cb(null, "./uploads/")
-    },
-    filename: function(req, file, cb ) { 
-       cb(null, file.fieldname + '--' + Date.now())
-    }
-  }
-)
+const filestorageEngine = multer.memoryStorage()
 const upload = multer({ storage: filestorageEngine })
 
 exports.uploadHandler = upload.single("file");
 
 exports.creatMeeting = async (req ,res , next) =>{ 
-  console.log(req.body)
     const meeting = await Meeting.create(req.body); 
     await Meeting.updateMany({_id:meeting._id},{file:req.file.buffer});
-  
     const  {startDateTime} = req.body 
-    console.log(req.body)
-     const expairedDate = Date.parse(startDateTime)
+
+       const expairedDate = Date.parse(startDateTime)
        if(expairedDate < Date.now()){
         return next(
             new ErrorResponse(`this is expaired date inter inavlid date` , 400)
             );
        }     
+       
          res.status(200).json({
             success: true ,
             msg: 'creat meetings' ,
             data: meeting ,
  
-        })
-         
+        })       
 } ;
- 
  
 exports.deleteMeeting = asyncHandler(async(req ,res , next) =>{
 
