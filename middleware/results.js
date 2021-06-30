@@ -3,7 +3,7 @@ const results = (model, populate) => async (req, res, next) => {
 
   // Copy req.query
   const reqQuery = { ...req.query };
-
+             
   // Fields to exclude
   const removeFields = ['select', 'sort', 'page', 'limit'];
 
@@ -17,7 +17,7 @@ const results = (model, populate) => async (req, res, next) => {
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
 
   // Finding resource
-  query = model.find(JSON.parse(queryStr));
+  query = model.find(JSON.parse(queryStr)).select('-file');
 
   // Select Fields
   if (req.query.select) {

@@ -3,25 +3,26 @@ const dotenv =require('dotenv')
 const morgan = require('morgan');
 var cors = require('cors')
 const colors = require('colors')
-const fileupload = require('express-fileupload');
 const cookieParser =require('cookie-parser') ;
 const loggar =require('./middleware/logger')
 const errorHandler =require('./middleware/error')
 const connectDB = require('./config/db')
 // load env
+const app = express();
 dotenv.config({path:'./config/config.env'}) 
-// load connectDB
+
 connectDB();
 
-// file routes 
+app.use(cors());
+
+
+app.use(express.json());
+
 const meetings =require('./routes/meetings')
 const auth =require('./routes/auth')
 const users =require('./routes/users')
 
-const app = express();
 
-app.use(cors());
-app.use(express.json());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {

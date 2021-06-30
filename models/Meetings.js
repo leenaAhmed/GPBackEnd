@@ -15,35 +15,26 @@ const MeetingsSchema = new mongoose.Schema({
       } ,
       duration: {
         type: String ,
-
       },
+      file: {
+        type: Buffer,     
+        } ,
       isExpaired :{
         type: Boolean,
         default: false
       },
-  
       join_url: {
         type: String , 
        }
-      ,
-      file: {
-        type: Buffer, 
-         
-        }, 
-        createdAt: {
+      , 
+      createdAt: {
           type: Date,
           default: Date.now()
-      },   
-      createdBy: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-       },
+      }, 
       recordUrl :{
         type: String
-      } ,
-      
-
- })
+      } 
+ })  
 MeetingsSchema.pre('save', function(next){
    this.slug = slugify(this.name ,{lower: true})
     next();
