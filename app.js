@@ -1,7 +1,7 @@
 const express =require('express')
 const dotenv =require('dotenv')
 const morgan = require('morgan');
-var cors = require('cors')
+const cors = require('cors')
 const colors = require('colors')
 const cookieParser =require('cookie-parser') ;
 const loggar =require('./middleware/logger')
