@@ -20,7 +20,6 @@ router
  
 router.route('/meetingNow').post(creatMeetingNow)
 
-console.log(uploadHandler)
 router
     .route('/:id')
     .get(getSingleMeetings)

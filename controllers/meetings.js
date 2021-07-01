@@ -29,13 +29,13 @@ const upload = multer({ storage: filestorageEngine })
 
 exports.uploadHandler = upload.single("file");
 
-exports.creatMeeting = async (req ,res , next) =>{ 
+exports.creatMeeting = asyncHandler (async (req ,res , next) =>{ 
     
      const meeting = await Meeting.create(req.body)
  
-     if(req.file)  {
-        await Meeting.updateMany({_id:meeting._id},{file:req.file.buffer})
-     }
+    //  if(req.file)  {
+    //     await Meeting.updateMany({_id:meeting._id},{file:req.file.buffer})
+    //  }
       const {startDateTime} = req.body 
 
      const expairedDate = Date.parse(startDateTime)
@@ -51,7 +51,7 @@ exports.creatMeeting = async (req ,res , next) =>{
             data:  meeting ,
  
         })       
-} ;
+}) ;
  
 exports.deleteMeeting = asyncHandler(async(req ,res , next) =>{
 
