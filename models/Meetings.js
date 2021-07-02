@@ -13,9 +13,6 @@ const MeetingsSchema = new mongoose.Schema({
           type: Date,
           default: Date.now() ,          
       } ,
-      duration: {
-        type: Object ,
-      },
       file: {
         type: Buffer,     
         } ,
@@ -48,9 +45,9 @@ MeetingsSchema.pre('save', function(next){
    this.slug = slugify(this.name ,{lower: true})
     next();
 })
-MeetingsSchema.pre('save', function(next){
-     this.duration.split(':') 
-    next()
+// MeetingsSchema.pre('save', function(next){
+//      this.duration.split(':') 
+//     next()
 
-});
+// });
 module.exports = mongoose.model('Meetings', MeetingsSchema);

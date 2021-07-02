@@ -1,7 +1,7 @@
 const  ErrorResponse = require('../utils/errorResponse')
 const  asyncHandler =require('../middleware/async')
 const  Meeting = require('../models/Meetings');
-const   User =require('../models/user')
+const  User = require('../models/user')
 const  multer  = require('multer');
      
 exports.getMeetings = asyncHandler(async (req ,res , next) =>{
