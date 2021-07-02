@@ -63,7 +63,8 @@ exports.getMe = asyncHandler(async(req, res, next) => {
 exports.updateDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
     name: req.body.name,
-    email: req.body.email
+    email: req.body.email ,
+    phone : req.body.phone
   };
 
   const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
@@ -83,7 +84,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
   // Check current password
   if (!(await user.matchPassword(req.body.currentPassword))) {
-    return next(new ErrorResponse('Password is incorrect', 401));
+    return next(new ErrorResponse('Password is incorrect please try again', 401));
   }
 
   user.password = req.body.newPassword;

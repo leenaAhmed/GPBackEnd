@@ -1,23 +1,30 @@
 const  ErrorResponse = require('../utils/errorResponse')
 const  asyncHandler =require('../middleware/async')
 const  Meeting = require('../models/Meetings');
-const  multer  = require('multer')
-    
+const   User =require('../models/user')
+const  multer  = require('multer');
+     
 exports.getMeetings = asyncHandler(async (req ,res , next) =>{
       await Meeting.updateMany({startDateTime:{$lt: new Date(Date.now())}},{isExpaired: true}).sort({createdAt: -1});
-     
+      console.log(reg.body.createdBy)
+
        res.status(200).json(res.results)
 }) ;
 
 
 exports.getSingleMeetings = asyncHandler(async (req ,res , next) =>{
-   
+    console.log(req.body.createdBy)
+
         const meeting = await Meeting.findById(req.params.id)
+        console.log(reg.body.createdBy)
+
         if(!meeting){
             return next(
              new ErrorResponse(`this meeting not found with id ${req.params.id}` , 404)
              );
           }
+          console.log(req.body.createdBy)
+
         res.status(200).json({
                 success: true ,
                 data: meeting
@@ -33,9 +40,9 @@ exports.creatMeeting = asyncHandler (async (req ,res , next) =>{
     
      const meeting = await Meeting.create(req.body)
  
-    //  if(req.file)  {
-    //     await Meeting.updateMany({_id:meeting._id},{file:req.file.buffer})
-    //  }
+     if(req.file)  {
+        await Meeting.updateMany({_id:meeting._id},{file:req.file.buffer})
+     }
       const {startDateTime} = req.body 
 
      const expairedDate = Date.parse(startDateTime)
@@ -44,7 +51,8 @@ exports.creatMeeting = asyncHandler (async (req ,res , next) =>{
             new ErrorResponse(`this is expaired date inter inavlid date` , 400)
             );
        }     
-       
+       console.log(req.body.createdBy)
+
         res.status(200).json({
             success: true ,
             msg: 'creat meetings' ,
@@ -98,26 +106,17 @@ exports.creatMeetingNow = asyncHandler(async (req ,res , next) =>{
      })
 }) ;
 
-
-// const filestorageEngine = multer.memoryStorage({
-//         destination: function (req, file, cb ) {
-//           cb(null, "./uploads/")
-//         },
-//         filename: function(req, file, cb ) { 
-//            cb(null, file.fieldname + '--' + Date.now())
-//         }
-//       }
-// )
-// const upload = multer({ storage: filestorageEngine })
-
-// exports.uploadHandler = upload.single("file");
-
-// exports.afterUploadFile = asyncHandler(async(req, res, next ) => {
-      
-//     await Meeting.updateMany({_id:req.params.id},{file:req.file.buffer});
+// exports.GenerateInvetion = asyncHandler(async (req , res, next) =>{
+//   const invetion =  await Meeting.findByIdAndUpdate(req.params.id ,req.body , {
+//         new: true ,
+//         runValidators: true
+//     })  
+//     const message = `${req.body.createdBy}'s invite you to join meeting Zoom meeting .
+//                                           tobic :  ${req.body.name} 
+//                                           Join Zoom Meeting   : ${Url}
+//                                           Meeting ID: 478 372 3750
+//                                           Passcode: X8P66k `
 //      res.status(200).json({
-//       success: true ,  
-//        })  
-//   });
- 
+//      })
+// })
             
