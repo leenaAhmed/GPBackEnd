@@ -8,6 +8,7 @@ const {
     updateMeeting ,
     creatMeetingNow ,
     uploadHandler ,
+    joinMeeting ,
     GenerateInvetion
 } = require('../controllers/meetings')
 const {protect} = require('../middleware/auth')
@@ -19,7 +20,8 @@ router
     .post(protect , uploadHandler,creatMeeting ) 
  
 router.route('/meetingNow').post(creatMeetingNow)
-router.route('/:id/invetion' ,GenerateInvetion)
+
+router.route('/:id').get(joinMeeting)
 
 router
     .route('/:id')
