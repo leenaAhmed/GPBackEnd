@@ -13,9 +13,15 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
   res.status(200).json(res.results);
 });
 
-exports.getSingleMeetings = asyncHandler(async (req, res, next) => {
-  console.log(req.body.createdBy);
+exports.UpdateMeetingData = asyncHandler(async (req, res, next) => {
+  const { participent } = req.body;
+  await Meeting.findByIdAndUpdate(
+    { _id: req.body.id },
+    { $push: { participent } }
+  );
+});
 
+exports.getSingleMeetings = asyncHandler(async (req, res, next) => {
   const meeting = await Meeting.findById(req.params.id);
   console.log(req.body.createdBy);
 
@@ -99,5 +105,3 @@ exports.creatMeetingNow = asyncHandler(async (req, res, next) => {
     data: meeting,
   });
 });
-
-exports.joinMeeting = asyncHandler(async (req, res, next) => {});

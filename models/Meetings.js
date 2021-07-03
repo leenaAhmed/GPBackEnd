@@ -16,6 +16,10 @@ const MeetingsSchema = new mongoose.Schema({
   file: {
     type: Buffer,
   },
+  state: {
+    type: String,
+    default: "Active",
+  },
   isExpaired: {
     type: Boolean,
     default: false,
@@ -34,14 +38,14 @@ const MeetingsSchema = new mongoose.Schema({
   recordUrl: {
     type: String,
   },
+  participent: {
+    type: Array,
+    users: [],
+  },
 });
 MeetingsSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
-// MeetingsSchema.pre('save', function(next){
-//      this.duration.split(':')
-//     next()
 
-// });
 module.exports = mongoose.model("Meetings", MeetingsSchema);
