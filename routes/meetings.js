@@ -26,6 +26,4 @@ router
   .put(protect, updateMeeting)
   .delete(protect, deleteMeeting);
 
-router.route("/:id").post(UpdateMeetingData);
-
 module.exports = router;

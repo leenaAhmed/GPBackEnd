@@ -12,10 +12,8 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
 
   res.status(200).json(res.results);
 });
-
+//
 exports.UpdateMeetingData = asyncHandler(async (req, res, next) => {
-  let userName = "";
-
   const users = await Meeting.findOneAndUpdate(
     { _id: req.body.id },
     {
@@ -86,10 +84,14 @@ exports.deleteMeeting = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateMeeting = asyncHandler(async (req, res, next) => {
-  const meeting = await Meeting.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  const meeting = await Meeting.findByIdAndUpdate(
+    req.params.id,
+    { $push: { participent: userName } },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
   if (!meeting) {
     return next(
       new ErrorResponse(`this meeting not found with id ${req.params.id}`, 404)
