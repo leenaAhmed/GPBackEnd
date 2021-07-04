@@ -20,12 +20,12 @@ router
 
 router.route("/meetingNow").post(creatMeetingNow);
 
-router.route("/:id").put(UpdateMeetingData);
-
 router
   .route("/:id")
   .get(getSingleMeetings)
   .put(protect, updateMeeting)
   .delete(protect, deleteMeeting);
+
+router.route("/:id").post(UpdateMeetingData);
 
 module.exports = router;

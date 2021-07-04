@@ -14,11 +14,18 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
 });
 
 exports.UpdateMeetingData = asyncHandler(async (req, res, next) => {
-  const { participent } = req.body;
-  await Meeting.findByIdAndUpdate(
+  let userName = "";
+
+  const users = await Meeting.findOneAndUpdate(
     { _id: req.body.id },
-    { $push: { participent } }
+    {
+      $push: { participent: userName },
+    }
   );
+  res.status(200).json({
+    success: true,
+    data: users,
+  });
 });
 
 exports.getSingleMeetings = asyncHandler(async (req, res, next) => {

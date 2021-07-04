@@ -38,10 +38,7 @@ const MeetingsSchema = new mongoose.Schema({
   recordUrl: {
     type: String,
   },
-  participent: {
-    type: Array,
-    users: [],
-  },
+  participent: [String],
 });
 MeetingsSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
