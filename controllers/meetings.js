@@ -12,30 +12,16 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
 
   res.status(200).json(res.results);
 });
-//
-exports.UpdateMeetingData = asyncHandler(async (req, res, next) => {
-  const users = await Meeting.findOneAndUpdate(
-    { _id: req.body.id },
-    {
-      $push: { participent: userName },
-    }
-  );
-  res.status(200).json({
-    success: true,
-    data: users,
-  });
-});
 
-exports.getSingleMeetings = asyncHandler(async (req, res, next) => {
+exports.getJoinUrl = asyncHandler(async (req, res, next) => {
   const meeting = await Meeting.findById(req.params.id);
-  console.log(req.body.createdBy);
-
+  const { join_url } = req.body;
+  join_url = " https://elqa3a.eduedges.com/room/lesson1";
   if (!meeting) {
     return next(
       new ErrorResponse(`this meeting not found with id ${req.params.id}`, 404)
     );
   }
-  console.log(req.body.createdBy);
 
   res.status(200).json({
     success: true,
@@ -84,48 +70,19 @@ exports.deleteMeeting = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateMeeting = asyncHandler(async (req, res, next) => {
-  const { participent, startDateTime } = req.body;
-
-  const ONDate = Date.parse(startDateTime);
-  if (ONDate === Date.now()) {
-    const meeting = await Meeting.findByIdAndUpdate(
-      req.params.id,
-      { $push: { participent } },
-      {
-        new: true,
-        runValidators: true,
-      }
+  const meeting = await Meeting.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  if (!meeting) {
+    return next(
+      new ErrorResponse(`this meeting not found with id ${req.params.id}`, 404)
     );
-    if (!meeting) {
-      return next(
-        new ErrorResponse(
-          `this meeting not found with id ${req.params.id}`,
-          404
-        )
-      );
-    }
-    res.status(200).json({
-      success: true,
-      data: meeting,
-    });
-  } else {
-    const meeting = await Meeting.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!meeting) {
-      return next(
-        new ErrorResponse(
-          `this meeting not found with id ${req.params.id}`,
-          404
-        )
-      );
-    }
-    res.status(200).json({
-      success: true,
-      data: meeting,
-    });
   }
+  res.status(200).json({
+    success: true,
+    data: meeting,
+  });
 });
 
 exports.creatMeetingNow = asyncHandler(async (req, res, next) => {
@@ -136,6 +93,57 @@ exports.creatMeetingNow = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     msg: "creat meetings now",
+    data: meeting,
+  });
+});
+
+exports.addUsers = asyncHandler(async (req, res, next) => {
+  const { participent } = req.body;
+
+  const meeting = await Meeting.findByIdAndUpdate(
+    req.params.id,
+    { $push: { participent } },
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).exce();
+
+  if (!meeting) {
+    return next(
+      new ErrorResponse(`this meeting not found with id ${req.params.id}`, 404)
+    );
+  }
+  res.status(200).json({
+    success: true,
+    data: meeting,
+  });
+});
+exports.UpdateStatus = asyncHandler(async (req, res, next) => {
+  const { status } = req.body;
+  const statusMettiong = await Meeting.findByIdAndUpdate(
+    req.params.id,
+    req.body.status,
+    {
+      new: true,
+    }
+  );
+  res.status(200).json({
+    success: true,
+    data: meeting,
+  });
+});
+exports.UpdateRcordUrl = asyncHandler(async (req, res, next) => {
+  const { recordUrl } = req.body;
+  const statusMettiong = await Meeting.findByIdAndUpdate(
+    req.params.id,
+    req.body.recordUrl,
+    {
+      new: true,
+    }
+  );
+  res.status(200).json({
+    success: true,
     data: meeting,
   });
 });

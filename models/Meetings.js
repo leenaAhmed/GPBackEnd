@@ -26,6 +26,7 @@ const MeetingsSchema = new mongoose.Schema({
   },
   join_url: {
     type: String,
+    default: "having to record",
   },
   createdBy: {
     type: mongoose.Schema.ObjectId,

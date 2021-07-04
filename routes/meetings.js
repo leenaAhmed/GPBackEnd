@@ -3,12 +3,13 @@ const Meetings = require("../models/Meetings");
 const {
   getMeetings,
   creatMeeting,
-  getSingleMeetings,
+  getJoinUrl,
   deleteMeeting,
   updateMeeting,
   creatMeetingNow,
   uploadHandler,
-  UpdateMeetingData,
+  addUsers,
+  UpdateStatus,
 } = require("../controllers/meetings");
 const { protect } = require("../middleware/auth");
 const results = require("../middleware/results");
@@ -22,8 +23,12 @@ router.route("/meetingNow").post(creatMeetingNow);
 
 router
   .route("/:id")
-  .get(getSingleMeetings)
+  .get(getJoinUrl)
   .put(protect, updateMeeting)
   .delete(protect, deleteMeeting);
+
+router.route("/:id/status").put(UpdateStatus);
+
+router.route("/:id/addusers").put(addUsers);
 
 module.exports = router;
