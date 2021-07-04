@@ -84,9 +84,10 @@ exports.deleteMeeting = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateMeeting = asyncHandler(async (req, res, next) => {
+  let userName = "";
   const meeting = await Meeting.findByIdAndUpdate(
     req.params.id,
-    { $push: { participent: userName } },
+    { $push: { participent } },
     {
       new: true,
       runValidators: true,
