@@ -84,25 +84,48 @@ exports.deleteMeeting = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateMeeting = asyncHandler(async (req, res, next) => {
-  let userName = "";
-  const { participent } = req.body;
-  const meeting = await Meeting.findByIdAndUpdate(
-    req.params.id,
-    { $push: { participent } },
-    {
+  const { participent, startDateTime } = req.body;
+
+  const ONDate = Date.parse(startDateTime);
+  if (ONDate === Date.now()) {
+    const meeting = await Meeting.findByIdAndUpdate(
+      req.params.id,
+      { $push: { participent } },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (!meeting) {
+      return next(
+        new ErrorResponse(
+          `this meeting not found with id ${req.params.id}`,
+          404
+        )
+      );
+    }
+    res.status(200).json({
+      success: true,
+      data: meeting,
+    });
+  } else {
+    const meeting = await Meeting.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
+    });
+    if (!meeting) {
+      return next(
+        new ErrorResponse(
+          `this meeting not found with id ${req.params.id}`,
+          404
+        )
+      );
     }
-  );
-  if (!meeting) {
-    return next(
-      new ErrorResponse(`this meeting not found with id ${req.params.id}`, 404)
-    );
+    res.status(200).json({
+      success: true,
+      data: meeting,
+    });
   }
-  res.status(200).json({
-    success: true,
-    data: meeting,
-  });
 });
 
 exports.creatMeetingNow = asyncHandler(async (req, res, next) => {
