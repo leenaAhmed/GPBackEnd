@@ -107,7 +107,7 @@ exports.addUsers = asyncHandler(async (req, res, next) => {
       new: true,
       runValidators: true,
     }
-  ).exce();
+  );
 
   if (!meeting) {
     return next(
