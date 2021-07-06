@@ -16,7 +16,7 @@ const MeetingsSchema = new mongoose.Schema({
   file: {
     type: Buffer,
   },
-  state: {
+  Status: {
     type: String,
     default: "Pending",
     enum: ["Pending", "start", "Deleted"],

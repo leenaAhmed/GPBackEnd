@@ -5,16 +5,33 @@ const User = require("../models/user");
 const multer = require("multer");
 
 exports.getMeetings = asyncHandler(async (req, res, next) => {
-  const meetings = await Meeting.find({ createdBy: req.user._id })
-    .select("-file")
-    .populate("createdBy")
-    .sort({ createdAt: -1 });
+  let query;
+  const reqQuery = { ...req.query };
+  const removeFields = ["select", "sort"];
+  removeFields.forEach((param) => delete reqQuery[param]);
+  console.log(reqQuery);
+  let querystr = JSON.stringify(reqQuery);
+  querystr = querystr.replace(
+    /\b(gt|gte|lt|lte|in)\b/g,
+    (match) => `$${match}`
+  );
+  // Finding resource
+
+  query = Meeting.find(JSON.parse(querystr), { createdBy: req.user._id }).sort({
+    createdAt: -1,
+  });
+
+  if (req.query.select) {
+    const fields = req.query.select.split(",").join(" ");
+    query = query.select(fields);
+  }
+
+  const meetings = await query;
 
   await Meeting.updateMany(
     { startDateTime: { $lt: new Date(Date.now()) } },
     { isExpaired: true }
   );
-  console.log(req.user);
 
   res.status(200).json({
     success: true,
@@ -25,8 +42,6 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
 
 exports.getJoinUrl = asyncHandler(async (req, res, next) => {
   const meeting = await Meeting.findById(req.params.id);
-  const { join_url } = req.body;
-  join_url = " https://elqa3a.eduedges.com/room/lesson1";
   if (!meeting) {
     return next(
       new ErrorResponse(`this meeting not found with id ${req.params.id}`, 404)
@@ -35,6 +50,8 @@ exports.getJoinUrl = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    doctorId: " https://elqa3a.eduedges.com/room/" + req.params.id + "/true",
+    studentId: " https://elqa3a.eduedges.com/room/" + req.params.id,
     data: meeting,
   });
 });
@@ -140,6 +157,9 @@ exports.UpdateStatus = asyncHandler(async (req, res, next) => {
       new: true,
     }
   );
+  if (startDateTime < Date.now()) {
+    status = "start";
+  }
   res.status(200).json({
     success: true,
     data: statusMettiong,
