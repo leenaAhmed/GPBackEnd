@@ -11,6 +11,7 @@ const {
   addUsers,
   UpdateStatus,
   UpdateRcordUrl,
+  pastmeetings,
 } = require("../controllers/meetings");
 const { protect } = require("../middleware/auth");
 const results = require("../middleware/results");
@@ -20,6 +21,8 @@ router
   .route("/")
   .get(protect, getMeetings)
   .post(protect, uploadHandler, creatMeeting);
+
+router.route("/pastmeeting").get(protect, pastmeetings);
 
 router.route("/meetingNow").post(protect, creatMeetingNow);
 

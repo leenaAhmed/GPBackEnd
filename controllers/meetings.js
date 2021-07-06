@@ -5,9 +5,11 @@ const User = require("../models/user");
 const multer = require("multer");
 
 exports.getMeetings = asyncHandler(async (req, res, next) => {
-  query = Meeting.find({ createdBy: req.user._id }).select("-file").sort({
-    createdAt: -1,
-  });
+  query = Meeting.find({ createdBy: req.user._id, isExpaired: false })
+    .select("-file")
+    .sort({
+      createdAt: -1,
+    });
 
   await Meeting.updateMany(
     { startDateTime: { $lt: new Date(Date.now()) } },
@@ -19,9 +21,31 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
     success: true,
     count: meetings.length,
     data: meetings,
+    doctorId: " https://elqa3a.eduedges.com/room/" + req.params.id + "/true",
+    studentId: " https://elqa3a.eduedges.com/room/" + req.params.id,
   });
 });
+exports.pastmeetings = asyncHandler(async (req, res, next) => {
+  query = Meeting.find({ createdBy: req.user._id, isExpaired: true })
+    .select("-file")
+    .sort({
+      createdAt: -1,
+    });
 
+  await Meeting.updateMany(
+    { startDateTime: { $lt: new Date(Date.now()) } },
+    { isExpaired: true }
+  );
+  const meetings = await query;
+
+  res.status(200).json({
+    success: true,
+    count: meetings.length,
+    data: meetings,
+    doctorId: " https://elqa3a.eduedges.com/room/" + req.params.id + "/true",
+    studentId: " https://elqa3a.eduedges.com/room/" + req.params.id,
+  });
+});
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
   const meeting = await Meeting.findById(req.params.id);
   if (!meeting) {
@@ -140,13 +164,25 @@ exports.UpdateStatus = asyncHandler(async (req, res, next) => {
       new: true,
     }
   );
-  if (startDateTime < Date.now()) {
+  if (isExpaired == true) {
     status = "start";
+    res.status(200).json({
+      success: true,
+      data: statusMettiong,
+    });
+  } else if (isExpaired == true && status == "delete") {
+    await Meeting.remove();
+
+    res.status(200).json({
+      success: true,
+      data: {},
+    });
+  } else {
+    res.status(200).json({
+      success: true,
+      data: statusMettiong,
+    });
   }
-  res.status(200).json({
-    success: true,
-    data: statusMettiong,
-  });
 });
 exports.UpdateRcordUrl = asyncHandler(async (req, res, next) => {
   const { recordUrl } = req.body;
