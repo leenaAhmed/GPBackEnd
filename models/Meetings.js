@@ -18,7 +18,8 @@ const MeetingsSchema = new mongoose.Schema({
   },
   state: {
     type: String,
-    default: "Active",
+    default: "Pending",
+    enum: ["Pending", "start", "Deleted"],
   },
   isExpaired: {
     type: Boolean,
@@ -26,11 +27,10 @@ const MeetingsSchema = new mongoose.Schema({
   },
   join_url: {
     type: String,
-    default: "having to record",
   },
   createdBy: {
-    type: mongoose.Schema.ObjectId,
-    ref: "user",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   createdAt: {
     type: Date,
@@ -38,6 +38,7 @@ const MeetingsSchema = new mongoose.Schema({
   },
   recordUrl: {
     type: String,
+    default: "having no record",
   },
   participent: [String],
 });

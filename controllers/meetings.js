@@ -5,12 +5,22 @@ const User = require("../models/user");
 const multer = require("multer");
 
 exports.getMeetings = asyncHandler(async (req, res, next) => {
+  const meetings = await Meeting.find({ createdBy: req.user._id })
+    .select("-file")
+    .populate("createdBy")
+    .sort({ createdAt: -1 });
+
   await Meeting.updateMany(
     { startDateTime: { $lt: new Date(Date.now()) } },
     { isExpaired: true }
-  ).sort({ createdAt: -1 });
+  );
+  console.log(req.user);
 
-  res.status(200).json(res.results);
+  res.status(200).json({
+    success: true,
+    count: meetings.length,
+    data: meetings,
+  });
 });
 
 exports.getJoinUrl = asyncHandler(async (req, res, next) => {
@@ -34,7 +44,10 @@ const upload = multer({ storage: filestorageEngine });
 exports.uploadHandler = upload.single("file");
 
 exports.creatMeeting = asyncHandler(async (req, res, next) => {
-  const meeting = await Meeting.create(req.body);
+  const meeting = await Meeting.create({
+    ...req.body,
+    createdBy: req.user._id,
+  });
 
   if (req.file) {
     await Meeting.updateMany({ _id: meeting._id }, { file: req.file.buffer });
@@ -47,7 +60,6 @@ exports.creatMeeting = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`this is expaired date inter inavlid date`, 400)
     );
   }
-  console.log(req.body.createdBy);
 
   res.status(200).json({
     success: true,
@@ -130,20 +142,20 @@ exports.UpdateStatus = asyncHandler(async (req, res, next) => {
   );
   res.status(200).json({
     success: true,
-    data: meeting,
+    data: statusMettiong,
   });
 });
 exports.UpdateRcordUrl = asyncHandler(async (req, res, next) => {
   const { recordUrl } = req.body;
-  const statusMettiong = await Meeting.findByIdAndUpdate(
+  const RecordURL = await Meeting.findByIdAndUpdate(
     req.params.id,
-    req.body.recordUrl,
+    { $set: { recordUrl } },
     {
       new: true,
     }
   );
   res.status(200).json({
     success: true,
-    data: meeting,
+    data: RecordURL,
   });
 });

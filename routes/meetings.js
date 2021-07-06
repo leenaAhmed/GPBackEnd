@@ -10,13 +10,21 @@ const {
   uploadHandler,
   addUsers,
   UpdateStatus,
+  UpdateRcordUrl,
 } = require("../controllers/meetings");
 const { protect } = require("../middleware/auth");
 const results = require("../middleware/results");
 // get all meetings
+
 router
   .route("/")
-  .get(results(Meetings), getMeetings)
+  .get(
+    results(Meetings, {
+      path: "User",
+    }),
+    protect,
+    getMeetings
+  )
   .post(protect, uploadHandler, creatMeeting);
 
 router.route("/meetingNow").post(creatMeetingNow);
@@ -30,5 +38,7 @@ router
 router.route("/:id/status").put(UpdateStatus);
 
 router.route("/:id/addusers").put(addUsers);
+
+router.route("/:id/addusers").put(UpdateRcordUrl);
 
 module.exports = router;
