@@ -3,7 +3,7 @@ const Meetings = require("../models/Meetings");
 const {
   getMeetings,
   creatMeeting,
-  getJoinUrl,
+  getSingleUser,
   deleteMeeting,
   updateMeeting,
   creatMeetingNow,
@@ -18,20 +18,14 @@ const results = require("../middleware/results");
 
 router
   .route("/")
-  .get(
-    results(Meetings, {
-      path: "User",
-    }),
-    protect,
-    getMeetings
-  )
+  .get(protect, getMeetings)
   .post(protect, uploadHandler, creatMeeting);
 
 router.route("/meetingNow").post(creatMeetingNow);
 
 router
   .route("/:id")
-  .get(getJoinUrl)
+  .get(getSingleUser)
   .put(protect, updateMeeting)
   .delete(protect, deleteMeeting);
 

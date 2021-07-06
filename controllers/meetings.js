@@ -5,33 +5,15 @@ const User = require("../models/user");
 const multer = require("multer");
 
 exports.getMeetings = asyncHandler(async (req, res, next) => {
-  let query;
-  const reqQuery = { ...req.query };
-  const removeFields = ["select", "sort"];
-  removeFields.forEach((param) => delete reqQuery[param]);
-  console.log(reqQuery);
-  let querystr = JSON.stringify(reqQuery);
-  querystr = querystr.replace(
-    /\b(gt|gte|lt|lte|in)\b/g,
-    (match) => `$${match}`
-  );
-  // Finding resource
-
-  query = Meeting.find(JSON.parse(querystr), { createdBy: req.user._id }).sort({
+  query = Meeting.find({ createdBy: req.user._id }).select("-file").sort({
     createdAt: -1,
   });
-
-  if (req.query.select) {
-    const fields = req.query.select.split(",").join(" ");
-    query = query.select(fields);
-  }
-
-  const meetings = await query;
 
   await Meeting.updateMany(
     { startDateTime: { $lt: new Date(Date.now()) } },
     { isExpaired: true }
   );
+  const meetings = await query;
 
   res.status(200).json({
     success: true,
@@ -40,7 +22,7 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.getJoinUrl = asyncHandler(async (req, res, next) => {
+exports.getSingleUser = asyncHandler(async (req, res, next) => {
   const meeting = await Meeting.findById(req.params.id);
   if (!meeting) {
     return next(
