@@ -24,12 +24,12 @@ const MeetingsSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  join_url: {
-    type: String,
-  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+  },
+  JoinURL: {
+    type: `https://elqa3a.eduedges.com/room/`,
   },
   createdAt: {
     type: Date,

@@ -6,17 +6,15 @@ const multer = require("multer");
 
 exports.getMeetings = asyncHandler(async (req, res, next) => {
   query = Meeting.find({ createdBy: req.user._id, isExpaired: false })
-    .select("-file")
+    .select("-participent")
     .sort({
       createdAt: -1,
     });
-
   await Meeting.updateMany(
     { startDateTime: { $lt: new Date(Date.now()) } },
     { isExpaired: true }
   );
   const meetings = await query;
-
   res.status(200).json({
     success: true,
     count: meetings.length,
@@ -50,11 +48,10 @@ exports.getSingleUser = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`this meeting not found with id ${req.params.id}`, 404)
     );
   }
-
   res.status(200).json({
     success: true,
-    doctorId: " https://elqa3a.eduedges.com/room/" + req.params.id + "/true",
-    studentId: " https://elqa3a.eduedges.com/room/" + req.params.id,
+    StudentUrl: "https://elqa3a.eduedges.com/room/" + req.params.id,
+    doctorUrl: "https://elqa3a.eduedges.com/room/" + req.params.id + "/true",
     data: meeting,
   });
 });
