@@ -21,7 +21,7 @@ router
   .get(protect, getMeetings)
   .post(protect, uploadHandler, creatMeeting);
 
-router.route("/meetingNow").post(creatMeetingNow);
+router.route("/meetingNow").post(protect, creatMeetingNow);
 
 router
   .route("/:id")

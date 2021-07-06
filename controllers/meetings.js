@@ -99,6 +99,7 @@ exports.updateMeeting = asyncHandler(async (req, res, next) => {
 exports.creatMeetingNow = asyncHandler(async (req, res, next) => {
   const meeting = await Meeting.create({
     name: req.body.name,
+    createdBy: req.user._id,
   });
 
   res.status(200).json({
