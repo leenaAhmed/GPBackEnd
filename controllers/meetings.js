@@ -21,8 +21,6 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
     success: true,
     count: meetings.length,
     data: meetings,
-    doctorId: " https://elqa3a.eduedges.com/room/" + req.params.id + "/true",
-    studentId: " https://elqa3a.eduedges.com/room/" + req.params.id,
   });
 });
 exports.pastmeetings = asyncHandler(async (req, res, next) => {
@@ -40,10 +38,9 @@ exports.pastmeetings = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+
     count: meetings.length,
     data: meetings,
-    doctorId: " https://elqa3a.eduedges.com/room/" + req.params.id + "/true",
-    studentId: " https://elqa3a.eduedges.com/room/" + req.params.id,
   });
 });
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
