@@ -22,11 +22,9 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
   });
 });
 exports.pastmeetings = asyncHandler(async (req, res, next) => {
-  query = Meeting.find({ createdBy: req.user._id, isExpaired: true })
-    .select("-file")
-    .sort({
-      createdAt: -1,
-    });
+  query = Meeting.find({ createdBy: req.user._id, isExpaired: true }).sort({
+    createdAt: -1,
+  });
 
   await Meeting.updateMany(
     { startDateTime: { $lt: new Date(Date.now()) } },
@@ -70,6 +68,10 @@ exports.creatMeeting = asyncHandler(async (req, res, next) => {
     await Meeting.updateMany({ _id: meeting._id }, { file: req.file.buffer });
   }
   const { startDateTime } = req.body;
+  await Meeting.updateMany(
+    { startDateTime: { $lt: new Date(Date.now()) } },
+    { isExpaired: true }
+  );
 
   const expairedDate = Date.parse(startDateTime);
   if (expairedDate < Date.now()) {
