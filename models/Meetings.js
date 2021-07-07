@@ -29,7 +29,7 @@ const MeetingsSchema = new mongoose.Schema({
     ref: "User",
   },
   JoinURL: {
-    type: `https://elqa3a.eduedges.com/room/`,
+    type: String,
   },
   createdAt: {
     type: Date,
