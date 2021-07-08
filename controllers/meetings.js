@@ -7,9 +7,7 @@ const multer = require("multer");
 exports.getMeetings = asyncHandler(async (req, res, next) => {
   query = Meeting.find({ createdBy: req.user._id, isExpaired: false })
     .select("-participent")
-    .sort({
-      createdAt: -1,
-    });
+    .sort({ createdAt: 1 });
   await Meeting.updateMany(
     { startDateTime: { $lt: new Date(Date.now()) } },
     { isExpaired: true }
@@ -46,6 +44,7 @@ exports.getSingleUser = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`this meeting not found with id ${req.params.id}`, 404)
     );
   }
+  console.log(req.body);
   res.status(200).json({
     success: true,
     StudentUrl: "https://elqa3a.eduedges.com/room/" + req.params.id,
@@ -80,7 +79,7 @@ exports.creatMeeting = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`this is expaired date inter inavlid date`, 400)
     );
   }
-
+  console.log(req.body);
   res.status(200).json({
     success: true,
     msg: "creat meetings",

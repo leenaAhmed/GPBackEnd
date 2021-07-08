@@ -31,6 +31,9 @@ const MeetingsSchema = new mongoose.Schema({
   JoinURL: {
     type: String,
   },
+  duration: {
+    type: Object,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),
