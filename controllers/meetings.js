@@ -20,8 +20,8 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
   });
 });
 exports.pastmeetings = asyncHandler(async (req, res, next) => {
-  query = Meeting.find({ createdBy: req.user._id, isExpaired: true }).sort({
-    createdAt: -1,
+  query = Meeting.find({ createdBy: req.user._id, isExpaired: false }).sort({
+    createdAt: 1,
   });
 
   await Meeting.updateMany(
@@ -160,25 +160,10 @@ exports.UpdateStatus = asyncHandler(async (req, res, next) => {
       new: true,
     }
   );
-  if (isExpaired == true) {
-    status = "start";
-    res.status(200).json({
-      success: true,
-      data: statusMettiong,
-    });
-  } else if (isExpaired == true && status == "delete") {
-    await Meeting.remove();
-
-    res.status(200).json({
-      success: true,
-      data: {},
-    });
-  } else {
-    res.status(200).json({
-      success: true,
-      data: statusMettiong,
-    });
-  }
+  res.status(200).json({
+    success: true,
+    data: statusMettiong,
+  });
 });
 exports.UpdateRcordUrl = asyncHandler(async (req, res, next) => {
   const { recordUrl } = req.body;
