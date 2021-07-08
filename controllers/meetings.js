@@ -65,7 +65,8 @@ exports.creatMeeting = asyncHandler(async (req, res, next) => {
   });
 
   if (req.file) {
-    await Meeting.updateMany({ _id: meeting._id }, { file: req.file.buffer });
+    const encoded = req.file.buffer.toString("base64");
+    await Meeting.updateMany({ _id: meeting._id }, { file: encoded });
   }
   const { startDateTime } = req.body;
   await Meeting.updateMany(
