@@ -13,6 +13,9 @@ const MeetingsSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  duration: {
+    type: Object,
+  },
   file: {
     type: Buffer,
   },
@@ -31,9 +34,7 @@ const MeetingsSchema = new mongoose.Schema({
   JoinURL: {
     type: String,
   },
-  duration: {
-    type: Object,
-  },
+
   createdAt: {
     type: Date,
     default: Date.now(),

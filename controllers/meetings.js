@@ -20,7 +20,7 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
   });
 });
 exports.pastmeetings = asyncHandler(async (req, res, next) => {
-  query = Meeting.find({ createdBy: req.user._id, isExpaired: false }).sort({
+  query = Meeting.find({ createdBy: req.user._id, isExpaired: true }).sort({
     createdAt: 1,
   });
 
