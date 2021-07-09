@@ -10,7 +10,7 @@ const MeetingsSchema = new mongoose.Schema({
   },
   slug: String,
   startDateTime: {
-    type: Date,
+    type: new Date("<YYYY-mm-dd>"),
     default: Date.now(),
   },
   duration: {
