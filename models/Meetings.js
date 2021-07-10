@@ -14,7 +14,7 @@ const MeetingsSchema = new mongoose.Schema({
     default: Date.now(),
   },
   duration: {
-    type: Object,
+    type: Date,
   },
   file: {
     type: Buffer,
