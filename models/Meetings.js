@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-var DateOnly = require("mongoose-dateonly")(mongoose);
-
 const User = require("./user");
 const slugify = require("slugify");
 
@@ -12,7 +10,7 @@ const MeetingsSchema = new mongoose.Schema({
   },
   slug: String,
   startDateTime: {
-    type: DateOnly,
+    type: Date,
     default: Date.now(),
   },
   duration: {
