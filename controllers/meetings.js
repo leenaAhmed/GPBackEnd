@@ -14,7 +14,7 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
     { isExpaired: true }
   );
   const pattern = date.compile("ddd, MMM DD YYYY");
-  startDateTime.format(pattern);
+  date.format(startDateTime, pattern);
 
   const meetings = await query;
   res.status(200).json({
