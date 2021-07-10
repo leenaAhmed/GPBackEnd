@@ -52,8 +52,8 @@ MeetingsSchema.pre("save", function (next) {
   next();
 });
 MeetingsSchema.pre("save", function (next) {
-  this.startDateTime = new Date();
-  date.format(startDateTime, "ddd, MMM DD YYYY");
+  this.startDateTime = date.format(startDateTime, "ddd, MMM DD YYYY");
+
   next();
 });
 
