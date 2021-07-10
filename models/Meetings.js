@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const date = require("date-and-time");
-const User = require("./user");
+// const date = require("date-and-time");
 const slugify = require("slugify");
 
 const MeetingsSchema = new mongoose.Schema({
@@ -51,10 +50,10 @@ MeetingsSchema.pre("save", function (next) {
 
   next();
 });
-MeetingsSchema.pre("save", function (next) {
-  this.startDateTime = date.format(startDateTime, "ddd, MMM DD YYYY");
+// MeetingsSchema.pre("save", function (next) {
+//   this.startDateTime = date.format(startDateTime, "ddd, MMM DD YYYY");
 
-  next();
-});
+//   next();
+// });
 
 module.exports = mongoose.model("Meetings", MeetingsSchema);
