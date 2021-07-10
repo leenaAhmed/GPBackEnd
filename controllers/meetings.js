@@ -1,5 +1,4 @@
 const ErrorResponse = require("../utils/errorResponse");
-const date = require("date-and-time");
 const asyncHandler = require("../middleware/async");
 const Meeting = require("../models/Meetings");
 const User = require("../models/user");
@@ -13,8 +12,7 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
     { startDateTime: { $lt: new Date(Date.now()) } },
     { isExpaired: true }
   );
-  const pattern = date.compile("ddd, MMM DD YYYY");
-  date.format(req.body.startDateTime, pattern);
+
   const meetings = await query;
   res.status(200).json({
     success: true,

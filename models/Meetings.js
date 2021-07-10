@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const date = require("date-and-time");
 const User = require("./user");
 const slugify = require("slugify");
 
@@ -47,6 +48,12 @@ const MeetingsSchema = new mongoose.Schema({
 });
 MeetingsSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
+
+  next();
+});
+MeetingsSchema.pre("save", function (next) {
+  this.startDateTime = new Date();
+  date.format(startDateTime, "ddd, MMM DD YYYY");
   next();
 });
 
