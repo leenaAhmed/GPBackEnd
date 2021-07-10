@@ -13,7 +13,8 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
     { startDateTime: { $lt: new Date(Date.now()) } },
     { isExpaired: true }
   );
-
+  const pattern = date.compile("ddd, MMM DD YYYY");
+  date.format(req.body.startDateTime, pattern);
   const meetings = await query;
   res.status(200).json({
     success: true,
@@ -65,8 +66,7 @@ exports.creatMeeting = asyncHandler(async (req, res, next) => {
     ...req.body,
     createdBy: req.user._id,
   });
-  const pattern = date.compile("ddd, MMM DD YYYY");
-  date.format(req.body.startDateTime, pattern);
+
   if (req.file) {
     const encoded = req.file.buffer.toString("base64");
     await Meeting.updateMany({ _id: meeting._id }, { file: encoded });
