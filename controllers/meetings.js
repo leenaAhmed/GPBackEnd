@@ -9,7 +9,7 @@ exports.getMeetings = asyncHandler(async (req, res, next) => {
     .select("-participent")
     .sort({ startDateTime: -1 });
   await Meeting.updateMany(
-    { startDateTime: { $lt: new Date(Date.now()) } },
+    { startDateTime: { $lt: new Date(Date.now() + 3 * 60 * 60 * 10000) } },
     { isExpaired: true }
   );
 
