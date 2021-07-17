@@ -73,7 +73,7 @@ exports.creatMeeting = asyncHandler(async (req, res, next) => {
     { isExpaired: true }
   );
 
-  const expairedDate = Date.parse(startDateTime) + 60 * 60 * 10000;
+  const expairedDate = Date.parse(startDateTime);
   if (expairedDate < Date.now()) {
     return next(
       new ErrorResponse(`This is expaired date Please Inter inavlid date`, 400)
